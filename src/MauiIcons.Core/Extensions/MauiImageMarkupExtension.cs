@@ -10,22 +10,42 @@ public static class MauiImageMarkupExtension
     /// </summary>
     public static TImage Icon<TImage>(this TImage bindable, Enum icon) where TImage : BindableObject, IImageSourcePart
     {
-        if (bindable is Button)
+        if(bindable is Button)
         {
-            bindable.SetValue(Button.TextProperty, icon.GetDescription());
-            bindable.SetValue(Button.FontFamilyProperty, icon.GetType().Name);
+            var imageSource = new FontImageSource()
+            {
+                Glyph = icon.GetDescription(),
+                FontFamily = icon.GetFontFamily(),
+                Size = 30.0,
+                Color = Colors.Black,
+            };
+            bindable.SetValue(Button.ImageSourceProperty, imageSource);
             return bindable;
         }
-        if (bindable is IImage)
+        if(bindable is IImage)
         {
             ImageSource imageSource = new FontImageSource()
             {
                 Glyph = icon.GetDescription(),
-                FontFamily =  icon.GetType().Name,
+                FontFamily = icon.GetType().Name,
             };
             bindable.SetValue(Image.SourceProperty, imageSource);
             return bindable;
         }
+
+        if(bindable is MenuItem)
+        {
+            var imageSource = new FontImageSource()
+            {
+                Glyph = icon.GetDescription(),
+                FontFamily = icon.GetFontFamily(),
+                Size = 50.0,
+                Color = Colors.Black,
+            };
+            bindable.SetValue(MenuItem.IconImageSourceProperty, imageSource);
+            return bindable;
+        }
+
         return ThrowCustomExpection<TImage>();
     }
 
@@ -34,12 +54,15 @@ public static class MauiImageMarkupExtension
     /// </summary>
     public static TSize IconSize<TSize>(this TSize bindable, double size) where TSize : BindableObject, IImage
     {
-        if (bindable is Button)
+        if(bindable is Button)
         {
-            bindable.SetValue(Button.FontSizeProperty, size);
+            var imageSource = GetExistingSource(bindable);
+            imageSource.Size = size;
+
+            bindable.SetValue(Button.ImageSourceProperty, imageSource);
             return bindable;
         }
-        if (bindable is IImage)
+        if(bindable is IImage)
         {
             var imageSource = GetExistingSource(bindable);
             imageSource.Size = size;
@@ -47,6 +70,16 @@ public static class MauiImageMarkupExtension
             bindable.SetValue(Image.SourceProperty, imageSource);
             return bindable;
         }
+
+        if(bindable is MenuItem)
+        {
+            var imageSource = GetExistingSource(bindable);
+            imageSource.Size = size;
+
+            bindable.SetValue(MenuItem.IconImageSourceProperty, imageSource);
+            return bindable;
+        }
+
         return ThrowCustomExpection<TSize>();
     }
 
@@ -55,12 +88,15 @@ public static class MauiImageMarkupExtension
     /// </summary>
     public static TColor IconColor<TColor>(this TColor bindable, Color color) where TColor : BindableObject, IImage
     {
-        if (bindable is Button)
+        if(bindable is Button)
         {
-            bindable.SetValue(Button.TextColorProperty, color);
+            var imageSource = GetExistingSource(bindable);
+            imageSource.Color = color;
+
+            bindable.SetValue(Button.ImageSourceProperty, imageSource);
             return bindable;
         }
-        if (bindable is IImage)
+        if(bindable is IImage)
         {
             var imageSource = GetExistingSource(bindable);
             imageSource.Color = color;
@@ -68,6 +104,16 @@ public static class MauiImageMarkupExtension
             bindable.SetValue(Image.SourceProperty, imageSource);
             return bindable;
         }
+
+        if(bindable is MenuItem)
+        {
+            var imageSource = GetExistingSource(bindable);
+            imageSource.Color = color;
+
+            bindable.SetValue(MenuItem.IconImageSourceProperty, imageSource);
+            return bindable;
+        }
+
         return ThrowCustomExpection<TColor>();
     }
 
@@ -76,14 +122,19 @@ public static class MauiImageMarkupExtension
     /// </summary>
     public static TColor IconBackgroundColor<TColor>(this TColor bindable, Color color) where TColor : BindableObject, IImage
     {
-        if (bindable is Button)
+        if(bindable is Button)
         {
-            bindable.SetValue(Button.BackgroundColorProperty, color);
+            //bindable.SetValue(Button.BackgroundColorProperty, color);
             return bindable;
         }
-        if (bindable is IImage)
+        if(bindable is IImage)
         {
             bindable.SetValue(Image.BackgroundColorProperty, color);
+            return bindable;
+        }
+
+        if(bindable is MenuItem)
+        {
             return bindable;
         }
         return ThrowCustomExpection<TColor>();
@@ -94,17 +145,29 @@ public static class MauiImageMarkupExtension
     /// </summary>
     public static TBool IconAutoScaling<TBool>(this TBool bindable, bool value) where TBool : BindableObject, IImage
     {
-        if (bindable is Button)
+        if(bindable is Button)
         {
-            bindable.SetValue(Button.FontAutoScalingEnabledProperty, value);
+            var imageSource = GetExistingSource(bindable);
+            imageSource.FontAutoScalingEnabled = value;
+
+            bindable.SetValue(Button.ImageSourceProperty, imageSource);
             return bindable;
         }
-        if (bindable is IImage)
+        if(bindable is IImage)
         {
             var imageSource = GetExistingSource(bindable);
             imageSource.FontAutoScalingEnabled = value;
 
             bindable.SetValue(Image.SourceProperty, imageSource);
+            return bindable;
+        }
+
+        if(bindable is MenuItem)
+        {
+            var imageSource = GetExistingSource(bindable);
+            imageSource.FontAutoScalingEnabled = value;
+
+            bindable.SetValue(MenuItem.IconImageSourceProperty, imageSource);
             return bindable;
         }
         return ThrowCustomExpection<TBool>();
@@ -115,10 +178,10 @@ public static class MauiImageMarkupExtension
     /// </summary>
     public static TPlatform OnPlatforms<TPlatform>(this TPlatform bindable, IList<string> platforms) where TPlatform : BindableObject, IImage
     {
-        if (bindable is Button && PlatformHelper.IsValidPlatform(platforms))
+        if(bindable is Button && PlatformHelper.IsValidPlatform(platforms))
             return bindable;
 
-        else if (bindable is Button)
+        else if(bindable is Button)
         {
             bindable.SetValue(Button.TextProperty, null);
             bindable.SetValue(Button.FontFamilyProperty, null);
@@ -128,10 +191,10 @@ public static class MauiImageMarkupExtension
             bindable.SetValue(Button.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is IImage && PlatformHelper.IsValidPlatform(platforms))
+        if(bindable is IImage && PlatformHelper.IsValidPlatform(platforms))
             return bindable;
 
-        else if (bindable is IImage)
+        else if(bindable is IImage)
         {
             bindable.SetValue(Image.SourceProperty, null);
             bindable.SetValue(Image.BackgroundColorProperty, null);
@@ -145,10 +208,10 @@ public static class MauiImageMarkupExtension
     /// </summary>
     public static TIdiom OnIdioms<TIdiom>(this TIdiom bindable, IList<string> idioms) where TIdiom : BindableObject, IImage
     {
-        if (bindable is Button && PlatformHelper.IsValidIdiom(idioms))
+        if(bindable is Button && PlatformHelper.IsValidIdiom(idioms))
             return bindable;
 
-        else if (bindable is Button)
+        else if(bindable is Button)
         {
             bindable.SetValue(Button.TextProperty, null);
             bindable.SetValue(Button.FontFamilyProperty, null);
@@ -158,10 +221,10 @@ public static class MauiImageMarkupExtension
             bindable.SetValue(Button.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is IImage && PlatformHelper.IsValidIdiom(idioms))
+        if(bindable is IImage && PlatformHelper.IsValidIdiom(idioms))
             return bindable;
 
-        else if (bindable is IImage)
+        else if(bindable is IImage)
         {
             bindable.SetValue(Image.SourceProperty, null);
             bindable.SetValue(Image.BackgroundColorProperty, null);
@@ -178,13 +241,29 @@ public static class MauiImageMarkupExtension
         throw new MauiIconsExpection(defaultInterpolatedStringHandler.ToStringAndClear());
     }
 
-    static FontImageSource GetExistingSource<TType>(TType bindable) where TType : BindableObject
+    internal static FontImageSource GetExistingSource<TType>(TType bindable) where TType : BindableObject
     {
         if(bindable is Image fontImage)
         {
-            if(fontImage.Source is null) return new FontImageSource();
+            if(fontImage.Source is null)
+                return new FontImageSource();
 
             return (FontImageSource)fontImage.Source;
+        }
+
+        if(bindable is Button button)
+        {
+            return button.ImageSource as FontImageSource ?? new FontImageSource();
+        }
+
+        if(bindable is ImageButton imageButton)
+        {
+            return imageButton.Source as FontImageSource ?? new FontImageSource();
+        }
+
+        if(bindable is MenuItem menuItem)
+        {
+            return menuItem.IconImageSource as FontImageSource ?? new FontImageSource();
         }
         throw new MauiIconsExpection("This Image Element Does Not Support Maui Icon Extensions.");
     }

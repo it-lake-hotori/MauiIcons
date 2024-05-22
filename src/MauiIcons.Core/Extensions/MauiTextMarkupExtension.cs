@@ -9,27 +9,33 @@ public static class MauiTextMarkupExtension
     /// </summary>
     public static TIcon Icon<TIcon>(this TIcon bindable, Enum icon, bool isPlaceHolder = true) where TIcon : BindableObject, IText
     {
-        if (bindable is ILabel)
+        if(bindable is ILabel)
         {
             bindable.SetValue(Label.TextProperty, icon.GetDescription());
             bindable.SetValue(Label.FontFamilyProperty, icon.GetType().Name);
             return bindable;
         }
-        if (bindable is IButton)
+        if(bindable is IButton)
         {
-            bindable.SetValue(Button.TextProperty, icon.GetDescription());
-            bindable.SetValue(Button.FontFamilyProperty, icon.GetType().Name);
+            var imageSource = new FontImageSource()
+            {
+                Glyph = icon.GetDescription(),
+                FontFamily = icon.GetFontFamily(),
+                Size = 30.0,
+                Color = Colors.Black,
+            };
+            bindable.SetValue(Button.ImageSourceProperty, imageSource);
             return bindable;
         }
-        if (bindable is Span)
+        if(bindable is Span)
         {
             bindable.SetValue(Span.TextProperty, icon.GetDescription());
             bindable.SetValue(Span.FontFamilyProperty, icon.GetType().Name);
             return bindable;
         }
-        if (bindable is IEntry)
+        if(bindable is IEntry)
         {
-            if (isPlaceHolder)
+            if(isPlaceHolder)
                 bindable.SetValue(Entry.PlaceholderProperty, icon.GetDescription());
             else
                 bindable.SetValue(Entry.TextProperty, icon.GetDescription());
@@ -67,32 +73,35 @@ public static class MauiTextMarkupExtension
 
     public static TSize IconSize<TSize>(this TSize bindable, double size, bool isPlaceHolder = true) where TSize : BindableObject, IText
     {
-        if (bindable is ILabel)
+        if(bindable is ILabel)
         {
             bindable.SetValue(Label.FontSizeProperty, size);
             return bindable;
         }
-        if (bindable is IButton)
+        if(bindable is IButton)
         {
-            bindable.SetValue(Button.FontSizeProperty, size);
+            var imageSource = MauiImageMarkupExtension.GetExistingSource(bindable);
+            imageSource.Size = size;
+
+            bindable.SetValue(Button.ImageSourceProperty, imageSource);
             return bindable;
         }
-        if (bindable is Span)
+        if(bindable is Span)
         {
             bindable.SetValue(Span.FontSizeProperty, size);
             return bindable;
         }
-        if (bindable is IEntry)
+        if(bindable is IEntry)
         {
             bindable.SetValue(Entry.FontSizeProperty, size);
             return bindable;
         }
-        if (bindable is ISearchBar)
+        if(bindable is ISearchBar)
         {
             bindable.SetValue(SearchBar.FontSizeProperty, size);
             return bindable;
         }
-        if (bindable is IEditor)
+        if(bindable is IEditor)
         {
             bindable.SetValue(Editor.FontSizeProperty, size);
             return bindable;
@@ -106,22 +115,25 @@ public static class MauiTextMarkupExtension
     /// </summary>
     public static TColor IconColor<TColor>(this TColor bindable, Color color, bool isPlaceHolder = true) where TColor : BindableObject, IText
     {
-        if (bindable is ILabel)
+        if(bindable is ILabel)
         {
             bindable.SetValue(Label.TextColorProperty, color);
             return bindable;
         }
-        if (bindable is IButton)
+        if(bindable is IButton)
         {
-            bindable.SetValue(Button.TextColorProperty, color);
+            var imageSource = MauiImageMarkupExtension.GetExistingSource(bindable);
+            imageSource.Color = color;
+
+            bindable.SetValue(Button.ImageSourceProperty, imageSource);
             return bindable;
         }
-        if (bindable is Span)
+        if(bindable is Span)
         {
             bindable.SetValue(Span.TextColorProperty, color);
             return bindable;
         }
-        if (bindable is IEntry)
+        if(bindable is IEntry)
         {
             if(isPlaceHolder)
                 bindable.SetValue(Entry.PlaceholderColorProperty, color);
@@ -130,7 +142,7 @@ public static class MauiTextMarkupExtension
 
             return bindable;
         }
-        if (bindable is ISearchBar)
+        if(bindable is ISearchBar)
         {
             if(isPlaceHolder)
                 bindable.SetValue(SearchBar.PlaceholderColorProperty, color);
@@ -139,7 +151,7 @@ public static class MauiTextMarkupExtension
 
             return bindable;
         }
-        if (bindable is IEditor)
+        if(bindable is IEditor)
         {
             bindable.SetValue(Editor.PlaceholderColorProperty, color);
             return bindable;
@@ -153,32 +165,32 @@ public static class MauiTextMarkupExtension
     /// </summary>
     public static TColor IconBackgroundColor<TColor>(this TColor bindable, Color color, bool isPlaceHolder = true) where TColor : BindableObject, IText
     {
-        if (bindable is ILabel)
+        if(bindable is ILabel)
         {
             bindable.SetValue(Label.BackgroundColorProperty, color);
             return bindable;
         }
-        if (bindable is IButton)
+        if(bindable is IButton)
         {
-            bindable.SetValue(Button.BackgroundColorProperty, color);
+            //bindable.SetValue(Button.BackgroundColorProperty, color);
             return bindable;
         }
-        if (bindable is Span)
+        if(bindable is Span)
         {
             bindable.SetValue(Span.BackgroundColorProperty, color);
             return bindable;
         }
-        if (bindable is IEntry)
+        if(bindable is IEntry)
         {
             bindable.SetValue(Entry.BackgroundColorProperty, color);
             return bindable;
         }
-        if (bindable is ISearchBar)
+        if(bindable is ISearchBar)
         {
             bindable.SetValue(SearchBar.BackgroundColorProperty, color);
             return bindable;
         }
-        if (bindable is IEditor)
+        if(bindable is IEditor)
         {
             bindable.SetValue(Editor.BackgroundColorProperty, color);
             return bindable;
@@ -192,32 +204,35 @@ public static class MauiTextMarkupExtension
     /// </summary>
     public static TBool IconAutoScaling<TBool>(this TBool bindable, bool value, bool isPlaceHolder = true) where TBool : BindableObject, IText
     {
-        if (bindable is ILabel)
+        if(bindable is ILabel)
         {
             bindable.SetValue(Label.FontAutoScalingEnabledProperty, value);
             return bindable;
         }
-        if (bindable is IButton)
+        if(bindable is IButton)
         {
-            bindable.SetValue(Button.FontAutoScalingEnabledProperty, value);
+            var imageSource = MauiImageMarkupExtension.GetExistingSource(bindable);
+            imageSource.FontAutoScalingEnabled = value;
+
+            bindable.SetValue(Button.ImageSourceProperty, imageSource);
             return bindable;
         }
-        if (bindable is Span)
+        if(bindable is Span)
         {
             bindable.SetValue(Span.FontAutoScalingEnabledProperty, value);
             return bindable;
         }
-        if (bindable is IEntry)
+        if(bindable is IEntry)
         {
             bindable.SetValue(Entry.FontAutoScalingEnabledProperty, value);
             return bindable;
         }
-        if (bindable is ISearchBar)
+        if(bindable is ISearchBar)
         {
             bindable.SetValue(SearchBar.FontAutoScalingEnabledProperty, value);
             return bindable;
         }
-        if (bindable is IEditor)
+        if(bindable is IEditor)
         {
             bindable.SetValue(Editor.FontAutoScalingEnabledProperty, value);
             return bindable;
@@ -225,16 +240,16 @@ public static class MauiTextMarkupExtension
         return ThrowCustomExpection<TBool>();
     }
 
-    
+
     /// <summary>
     /// Sets a value for multiple platforms that this should render.
     /// </summary>
     public static TPlatform OnPlatforms<TPlatform>(this TPlatform bindable, IList<string> platforms, bool isPlaceHolder = true) where TPlatform : BindableObject, IText
     {
-        if (bindable is ILabel && PlatformHelper.IsValidPlatform(platforms))
+        if(bindable is ILabel && PlatformHelper.IsValidPlatform(platforms))
             return bindable;
 
-        else if (bindable is ILabel)
+        else if(bindable is ILabel)
         {
             bindable.SetValue(Label.TextProperty, null);
             bindable.SetValue(Label.FontFamilyProperty, null);
@@ -244,10 +259,10 @@ public static class MauiTextMarkupExtension
             bindable.SetValue(Label.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is IButton && PlatformHelper.IsValidPlatform(platforms))
+        if(bindable is IButton && PlatformHelper.IsValidPlatform(platforms))
             return bindable;
 
-        else if (bindable is IButton)
+        else if(bindable is IButton)
         {
             bindable.SetValue(Button.TextProperty, null);
             bindable.SetValue(Button.FontFamilyProperty, null);
@@ -257,10 +272,10 @@ public static class MauiTextMarkupExtension
             bindable.SetValue(Button.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is Span && PlatformHelper.IsValidPlatform(platforms))
+        if(bindable is Span && PlatformHelper.IsValidPlatform(platforms))
             return bindable;
 
-        else if (bindable is Span)
+        else if(bindable is Span)
         {
             bindable.SetValue(Span.TextProperty, null);
             bindable.SetValue(Span.FontFamilyProperty, null);
@@ -270,10 +285,10 @@ public static class MauiTextMarkupExtension
             bindable.SetValue(Span.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is IEntry && PlatformHelper.IsValidPlatform(platforms))
+        if(bindable is IEntry && PlatformHelper.IsValidPlatform(platforms))
             return bindable;
 
-        else if (bindable is IEntry)
+        else if(bindable is IEntry)
         {
             bindable.SetValue(Entry.TextProperty, null);
             bindable.SetValue(Entry.PlaceholderProperty, null);
@@ -285,10 +300,10 @@ public static class MauiTextMarkupExtension
             bindable.SetValue(Entry.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is ISearchBar && PlatformHelper.IsValidPlatform(platforms))
+        if(bindable is ISearchBar && PlatformHelper.IsValidPlatform(platforms))
             return bindable;
 
-        else if (bindable is ISearchBar)
+        else if(bindable is ISearchBar)
         {
             bindable.SetValue(SearchBar.TextProperty, null);
             bindable.SetValue(SearchBar.PlaceholderProperty, null);
@@ -301,10 +316,10 @@ public static class MauiTextMarkupExtension
             return bindable;
 
         }
-        if (bindable is IEditor && PlatformHelper.IsValidPlatform(platforms))
+        if(bindable is IEditor && PlatformHelper.IsValidPlatform(platforms))
             return bindable;
 
-        else if (bindable is IEditor)
+        else if(bindable is IEditor)
         {
             bindable.SetValue(Editor.TextProperty, null);
             bindable.SetValue(Editor.PlaceholderProperty, null);
@@ -324,10 +339,10 @@ public static class MauiTextMarkupExtension
     /// </summary>
     public static TIdiom OnIdioms<TIdiom>(this TIdiom bindable, IList<string> idioms, bool isPlaceHolder = true) where TIdiom : BindableObject, IText
     {
-        if (bindable is ILabel && PlatformHelper.IsValidIdiom(idioms))
+        if(bindable is ILabel && PlatformHelper.IsValidIdiom(idioms))
             return bindable;
 
-        else if (bindable is ILabel)
+        else if(bindable is ILabel)
         {
             bindable.SetValue(Label.TextProperty, null);
             bindable.SetValue(Label.FontFamilyProperty, null);
@@ -337,10 +352,10 @@ public static class MauiTextMarkupExtension
             bindable.SetValue(Label.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is IButton && PlatformHelper.IsValidIdiom(idioms))
+        if(bindable is IButton && PlatformHelper.IsValidIdiom(idioms))
             return bindable;
 
-        else if (bindable is IButton)
+        else if(bindable is IButton)
         {
             bindable.SetValue(Button.TextProperty, null);
             bindable.SetValue(Button.FontFamilyProperty, null);
@@ -350,10 +365,10 @@ public static class MauiTextMarkupExtension
             bindable.SetValue(Button.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is Span && PlatformHelper.IsValidIdiom(idioms))
+        if(bindable is Span && PlatformHelper.IsValidIdiom(idioms))
             return bindable;
 
-        else if (bindable is Span)
+        else if(bindable is Span)
         {
             bindable.SetValue(Span.TextProperty, null);
             bindable.SetValue(Span.FontFamilyProperty, null);
@@ -363,10 +378,10 @@ public static class MauiTextMarkupExtension
             bindable.SetValue(Span.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is IEntry && PlatformHelper.IsValidIdiom(idioms))
+        if(bindable is IEntry && PlatformHelper.IsValidIdiom(idioms))
             return bindable;
 
-        else if (bindable is IEntry)
+        else if(bindable is IEntry)
         {
             bindable.SetValue(Entry.TextProperty, null);
             bindable.SetValue(Entry.PlaceholderProperty, null);
@@ -378,10 +393,10 @@ public static class MauiTextMarkupExtension
             bindable.SetValue(Entry.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is ISearchBar && PlatformHelper.IsValidIdiom(idioms))
+        if(bindable is ISearchBar && PlatformHelper.IsValidIdiom(idioms))
             return bindable;
 
-        else if (bindable is ISearchBar)
+        else if(bindable is ISearchBar)
         {
             bindable.SetValue(SearchBar.TextProperty, null);
             bindable.SetValue(SearchBar.PlaceholderProperty, null);
@@ -393,10 +408,10 @@ public static class MauiTextMarkupExtension
             bindable.SetValue(SearchBar.FontAutoScalingEnabledProperty, false);
             return bindable;
         }
-        if (bindable is IEditor && PlatformHelper.IsValidIdiom(idioms))
+        if(bindable is IEditor && PlatformHelper.IsValidIdiom(idioms))
             return bindable;
 
-        else if (bindable is IEditor)
+        else if(bindable is IEditor)
         {
             bindable.SetValue(Editor.TextProperty, null);
             bindable.SetValue(Editor.PlaceholderProperty, null);
