@@ -1,7 +1,7 @@
 ﻿using MauiIcons.Core.Helpers;
 
 namespace MauiIcons.Core;
-public static class CommonExtension
+public static class MauiIconsExtension
 {
     /// <summary>
     /// this is used for seamlessly transforming the MauiIcons Enum Constructs to an ImageSource
