@@ -1,0 +1,10 @@
+・ボタンを、ImageSourceとTextのそれぞれに設定できるようにする。
+・ImageSourceを持つコントロールのMarkup拡張メソッド追加
+Slider,Shell(FlyoutIcon),BaseShellItem,SearchHandler(3つ),MenuItem,ImageCell
+(PageはBackgronudImageSourceの設定になり、Iconの設定としては適さないので除外)
+
+・ReadmeのXAML部分を修正する
+・C# Markupの場合はOnPlatformとOnIdiomの引数を構造体で渡せるようにする。
+
+・Buttonにあらかじめテキストを設定していて、後からIconでOnPlatformsを設定すると、Textが消えてしまう。
+プラットフォームに合致しなかった時にTextPropertyやFontFamilyをnullに設定してしまっている。
