@@ -8,7 +8,6 @@ internal static class EnumHelper
     public static string GetDescription(this Enum? value)
     {
         if(value is null) return string.Empty;
-
         FieldInfo? fieldInfo = value.GetType().GetField(value.ToString());
         if (fieldInfo is not null)
         {
@@ -20,6 +19,21 @@ internal static class EnumHelper
         }
         return string.Empty;
     }
+
+    public static string GetDescription<TEnum>(this TEnum value) where TEnum : struct, Enum
+    {
+        FieldInfo? fieldInfo = value.GetType().GetField(value.ToString());
+        if(fieldInfo is not null)
+        {
+            object[] attributes = fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), true);
+            if(attributes.Length > 0)
+            {
+                return ((DescriptionAttribute)attributes[0]).Description;
+            }
+        }
+        return string.Empty;
+    }
+
     public static TEnum? GetEnumByDescription<TEnum>(this string? description) where TEnum : Enum 
     {
         if (description is null) return default;

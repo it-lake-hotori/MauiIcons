@@ -13,7 +13,7 @@ public static class MauiIconsExtension
     /// <exception cref="MauiIconsExpection">
     /// Thrown when the Enum is not a MauiIcons Construct
     /// </exception>
-    public static ImageSource ToImageSource(this Enum icon, Color? iconColor = null, double iconSize = 30.0, bool iconAutoScaling = false)
+    public static ImageSource ToImageSource<TEnum>(this TEnum icon, Color? iconColor = null, double iconSize = 30.0, bool iconAutoScaling = false) where TEnum : struct, Enum
     {
         if (icon.GetDescription() is null)
             throw new MauiIconsExpection("MauiIcons ToImageSourceExtension Only Works on MauiIcons Constructs Not on All the Enum Types");

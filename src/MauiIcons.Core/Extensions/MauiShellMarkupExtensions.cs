@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MauiIcons.Core;
 public static class MauiShellMarkupExtensions
 {
-    public static T HamburgerIcon<T>(this T shell,Enum icon,double size = 30d, Color color = default(Color) ,bool autoScaling = false) where T : Shell
+    public static T HamburgerIcon<T,TEnum>(this T shell, TEnum icon,double size = 30d, Color color = default(Color) ,bool autoScaling = false) where T : Shell where TEnum : struct,Enum
     {
         var imageSource = new FontImageSource()
         {

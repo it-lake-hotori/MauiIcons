@@ -8,7 +8,7 @@ public static class MauiImageMarkupExtension
     /// <summary>
     /// Gets or sets the icon.
     /// </summary>
-    public static TImage Icon<TImage>(this TImage bindable, Enum icon) where TImage : BindableObject, IImageSourcePart
+    public static TImage Icon<TImage,TEnum>(this TImage bindable, TEnum icon) where TImage : BindableObject, IImageSourcePart where TEnum : struct,Enum
     {
         if(bindable is Button)
         {

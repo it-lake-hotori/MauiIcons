@@ -7,7 +7,7 @@ public static class MauiIconMarkupExtension
     /// <summary>
     /// Sets the icon.
     /// </summary>
-    public static TIcon Icon<TIcon>(this TIcon bindable, Enum Icon) where TIcon : BindableObject, IMauiIcon
+    public static TIcon Icon<TIcon,TEnum>(this TIcon bindable, TEnum Icon) where TIcon : BindableObject, IMauiIcon where TEnum : struct, Enum
     {
         if(bindable is IMauiIcon)
         {

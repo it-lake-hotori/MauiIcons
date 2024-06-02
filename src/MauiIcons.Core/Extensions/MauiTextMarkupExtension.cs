@@ -7,7 +7,7 @@ public static class MauiTextMarkupExtension
     /// <summary>
     /// Sets the icon.
     /// </summary>
-    public static TIcon Icon<TIcon>(this TIcon bindable, Enum icon, bool isPlaceHolder = true) where TIcon : BindableObject, IText
+    public static TIcon Icon<TIcon,TEnum>(this TIcon bindable, TEnum icon, bool isPlaceHolder = true) where TIcon : BindableObject, IText where TEnum : struct, Enum
     {
         if(bindable is ILabel)
         {
